@@ -1,13 +1,8 @@
-const axios = require('axios');
-const https = require('https');
-const cheerio = require('cheerio');
+
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-const agent = new https.Agent({
-  rejectUnauthorized: false
-});
 
 /**
  * Root: list endpoints
@@ -17,8 +12,10 @@ app.get('/', function (req, res) {
   let endpoints = [];
 
   // format here should be [address] - [short desc]. [DATATYPE]
-  endpoints.push('/latest - Latests block height. STRING');
-  endpoints.push('/meantime - Average block time. STRING');
+  endpoints.push('/put/color - Records a color value as a hexidecimal color (eg. #ffffff is white). STRING');
+  endpoints.push('/put/quantum - Records the response from the quantum annealer. STRING');
+  endpoints.push('/read/color - Returns the latest color value recorded. STRING');
+  endpoints.push('/read/gpt-3 - Returns the latest response form GPT-3. STRING');
 
   let output = endpoints.map(out => out);
 
