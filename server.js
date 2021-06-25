@@ -1,8 +1,12 @@
 
 const express = require('express');
 const app = express();
+const expressWS = require('express-ws');
+const ews = expressWS(app);
+
 const PORT = process.env.PORT || 8080;
 
+var storedColor = "#000000"
 
 /**
  * Root: list endpoints
@@ -16,6 +20,7 @@ app.get('/', function (req, res) {
   endpoints.push('/put/quantum - Records the response from the quantum annealer. STRING');
   endpoints.push('/read/color - Returns the latest color value recorded. STRING');
   endpoints.push('/read/gpt-3 - Returns the latest response form GPT-3. STRING');
+  endpoints.push('/ws/neos - Communication channel with Neos WebsocketClient');
 
   let output = endpoints.map(out => out);
 
@@ -56,6 +61,7 @@ app.get('/read/color', function (req, res) {
   // retrieve color value from our store
   // return the color value
 
+  res.send(storedColor);
 });
 
 /**
@@ -65,6 +71,36 @@ app.get('/read/gpt-3', function (req, res) {
   // retrieve the latest response from GPT-3
   // return the gpt-3 value
 
+});
+
+/************
+ * Websockets
+*/
+
+/**
+ * You can connect a Neos WebsocketClient to this by connecting to "ws://[address]:8080/ws/neos"
+ */
+app.ws("/ws/neos", function(ws, req){
+  var hex=/[0-9A-Fa-f]{6}/;
+  ws.on('message', function incoming(data) {
+    //console.log('Received:'+data)
+    try {
+      parsed=JSON.parse(data)
+      //console.log('JSON:'+parsed)
+      if(!parsed.color.startsWith("#"))
+        ws.send("Color should start with #!");
+      else if (parsed.color.length!=7 || !hex.test(parsed.color.substring(1)))
+        ws.send("Color must have 6 hexadecimal characters!");
+      else{
+        ws.send("Color: "+parsed.color);
+        storedColor=parsed.color;
+      }
+    }catch(err) {
+      ws.send("Error parsing JSON");
+    }finally{
+      hex.lastIndex=0;
+    }
+  });
 });
 
 /******************
