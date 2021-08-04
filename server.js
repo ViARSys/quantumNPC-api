@@ -32,11 +32,11 @@ app.get('/', function (req, res) {
  */
 
 /**
- * Neos hits this endpoint in order to give us the color value to record.
+ * Neos hits this endpoint in order to give us the values to record.
  */
-app.get('/put/color', function (req, res) {
-  // clean the color value
-  // record the color value to the store
+app.get('/put/neos', function (req, res) {
+  // clean the value
+  // record the value to the store
 
 });
 
