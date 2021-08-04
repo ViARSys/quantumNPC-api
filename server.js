@@ -3,10 +3,14 @@ const express = require('express');
 const app = express();
 const expressWS = require('express-ws');
 const ews = expressWS(app);
+const bodyParser = require('body-parser');
 
 const PORT = process.env.PORT || 8080;
 
 var storedColor = "#000000"
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 /**
  * Root: list endpoints
@@ -34,7 +38,7 @@ app.get('/', function (req, res) {
 /**
  * Neos hits this endpoint in order to give us the values to record.
  */
-app.get('/put/neos', function (req, res) {
+app.post('/put/neos', function (req, res) {
   // clean the value
   // record the value to the store
 
