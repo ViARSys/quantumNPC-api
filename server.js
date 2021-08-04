@@ -20,7 +20,7 @@ app.get('/', function (req, res) {
   let endpoints = [];
 
   // format here should be [address] - [short desc]. [DATATYPE]
-  endpoints.push('/put/color - Records a color value as a hexidecimal color (eg. #ffffff is white). STRING');
+  endpoints.push('/put/neos - Records the POST value from Neos. STRING');
   endpoints.push('/put/quantum - Records the response from the quantum annealer. STRING');
   endpoints.push('/read/color - Returns the latest color value recorded. STRING');
   endpoints.push('/read/gpt-3 - Returns the latest response form GPT-3. STRING');
