@@ -1,16 +1,14 @@
 
 const express = require('express');
 const app = express();
-const expressWS = require('express-ws');
-const ews = expressWS(app);
-const bodyParser = require('body-parser');
+//const expressWS = require('express-ws');
+//const ews = expressWS(app);
 
 const PORT = process.env.PORT || 8080;
 
 var storedColor = "#000000"
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.json());
 
 /**
  * Root: list endpoints
@@ -109,7 +107,7 @@ app.get('/read/gpt-3', function (req, res) {
 /**
  * You can connect a Neos WebsocketClient to this by connecting to "ws://[address]:8080/ws/neos"
  */
-app.ws("/ws/neos", function(ws, req){
+/*app.ws("/ws/neos", function(ws, req){
   var hex=/[0-9A-Fa-f]{6}/;
   ws.on('message', function incoming(data) {
     //console.log('Received:'+data)
@@ -130,7 +128,7 @@ app.ws("/ws/neos", function(ws, req){
       hex.lastIndex=0;
     }
   });
-});
+});*/
 
 /******************
  * GPT-3 processing
