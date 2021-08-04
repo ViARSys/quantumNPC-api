@@ -35,10 +35,35 @@ app.get('/', function (req, res) {
  * PUTS
  */
 
+
+/****** Data format from neos
+{
+  "emotions": {
+    "peaceful": "1",
+    "loving": "0",
+    "uplifting": "-1",
+    "somber": "0",
+    "etc...": "etc..."
+  },
+  "avatar_type": {
+    "furry": "1",
+    "anime": "0",
+    "human": "1",
+    "robot": "-1",
+    "etc...": "etc..."
+  },
+  "etc...": "etc..."
+}
+*/
+
 /**
  * Neos hits this endpoint in order to give us the values to record.
  */
 app.post('/put/neos', function (req, res) {
+  // get the value from the response and parse
+  var neos_emotions = req.body.emotions;
+  var neos_avatar_type = req.body.avatar_type;
+  
   // clean the value
   // record the value to the store
 
