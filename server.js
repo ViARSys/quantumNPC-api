@@ -61,10 +61,12 @@ app.post('/put/neos', function (req, res) {
   // get the value from the response and parse
   var neos_emotions = req.body.emotions;
   var neos_avatar_type = req.body.avatar_type;
+  var neos_population = req.body.population;
   
   // clean the value
   // record the value to the store
-
+  console.log(neos_population);
+  res.send(req.body);
 });
 
 /**
