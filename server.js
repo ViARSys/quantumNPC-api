@@ -1,12 +1,14 @@
 
 const express = require('express');
 const app = express();
-const expressWS = require('express-ws');
-const ews = expressWS(app);
+//const expressWS = require('express-ws');
+//const ews = expressWS(app);
 
 const PORT = process.env.PORT || 8080;
 
 var storedColor = "#000000"
+
+app.use(express.json());
 
 /**
  * Root: list endpoints
@@ -16,7 +18,7 @@ app.get('/', function (req, res) {
   let endpoints = [];
 
   // format here should be [address] - [short desc]. [DATATYPE]
-  endpoints.push('/put/color - Records a color value as a hexidecimal color (eg. #ffffff is white). STRING');
+  endpoints.push('/put/neos - Records the POST value from Neos. STRING');
   endpoints.push('/put/quantum - Records the response from the quantum annealer. STRING');
   endpoints.push('/read/color - Returns the latest color value recorded. STRING');
   endpoints.push('/read/gpt-3 - Returns the latest response form GPT-3. STRING');
@@ -31,12 +33,37 @@ app.get('/', function (req, res) {
  * PUTS
  */
 
+
+/****** Data format from neos
+{
+  "emotions": {
+    "peaceful": "1",
+    "loving": "0",
+    "uplifting": "-1",
+    "somber": "0",
+    "etc...": "etc..."
+  },
+  "avatar_type": {
+    "furry": "1",
+    "anime": "0",
+    "human": "1",
+    "robot": "-1",
+    "etc...": "etc..."
+  },
+  "etc...": "etc..."
+}
+*/
+
 /**
- * Neos hits this endpoint in order to give us the color value to record.
+ * Neos hits this endpoint in order to give us the values to record.
  */
-app.get('/put/color', function (req, res) {
-  // clean the color value
-  // record the color value to the store
+app.post('/put/neos', function (req, res) {
+  // get the value from the response and parse
+  var neos_emotions = req.body.emotions;
+  var neos_avatar_type = req.body.avatar_type;
+  
+  // clean the value
+  // record the value to the store
 
 });
 
@@ -80,7 +107,7 @@ app.get('/read/gpt-3', function (req, res) {
 /**
  * You can connect a Neos WebsocketClient to this by connecting to "ws://[address]:8080/ws/neos"
  */
-app.ws("/ws/neos", function(ws, req){
+/*app.ws("/ws/neos", function(ws, req){
   var hex=/[0-9A-Fa-f]{6}/;
   ws.on('message', function incoming(data) {
     //console.log('Received:'+data)
@@ -101,7 +128,7 @@ app.ws("/ws/neos", function(ws, req){
       hex.lastIndex=0;
     }
   });
-});
+});*/
 
 /******************
  * GPT-3 processing
