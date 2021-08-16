@@ -36,21 +36,37 @@ app.get('/', function (req, res) {
 
 /****** Data format from neos
 {
-  "emotions": {
-    "peaceful": "1",
-    "loving": "0",
-    "uplifting": "-1",
-    "somber": "0",
-    "etc...": "etc..."
+  "aesthetic": {
+    "forest_city": 0,
+    "dark_light": 0,
+    "beach_mountain": 0,
+    "large_small": 1,
+    "realistic_abstract": 0
+  },
+  "staff": {
+    "many_none": 0
+  },
+  "experience": {
+    "new_old": 0
   },
   "avatar_type": {
-    "furry": "1",
-    "anime": "0",
-    "human": "1",
-    "robot": "-1",
-    "etc...": "etc..."
+    "furry_anime": 1,
+    "human_robot": 0
   },
-  "etc...": "etc..."
+  "population": {
+    "furry_anime": 0,
+    "human_robot": -1,
+    "full_empty": 1
+  },
+  "emotion": {
+    "intensity": -1,
+    "peaceful": -0.06188899,
+    "loving": -0.06188899,
+    "uplifting": -0.06188899,
+    "somber": -0.06188899,
+    "angry": -1,
+    "vengeful": -0.06188899
+  }
 }
 */
 
@@ -65,7 +81,7 @@ app.post('/put/neos', function (req, res) {
   
   // clean the value
   // record the value to the store
-  console.log(neos_population);
+  console.log(req.body);
   res.send(req.body);
 });
 
