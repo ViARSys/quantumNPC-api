@@ -7,7 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // INITial values for songstress and possibion which can be overwritten in memory and ensures we always have a value
-var songstress = {
+var neos_songstress = {
   "songstress": [
     "golden air mountain",
     "dirty spring lake",
@@ -18,7 +18,7 @@ var songstress = {
   ]
 }
 
-var possibilon = {
+var neos_possibilon = {
   "possibilon": {
     "architype": "furry",
     "color": "green",
@@ -40,6 +40,29 @@ var possibilon = {
   }
 }
 
+// DWAVE will return random lyrics from it's probability score
+// we can choose to use the random ones, or 
+// take the first one along with the next 4 consequtive lines from that song
+var dwave_songstress = {
+  "randomized": [
+    "alive in Spring",
+    "so far away, a solitary Light",
+    "easy go easy come",
+    "built up on a shaky foundation",
+    "the sky goes on forever"
+  ],
+  "consecutive": [
+    "alive in Spring",
+    "i have a sturdy stamen",
+    "i am burning to know",
+    "i grow aware in mid-air",
+    "i am showing, opening"
+  ]
+}
+
+var dwave_possibilon = [
+  "unsure what this response will look like yet"
+]
 
 
 app.use(express.json());
@@ -51,13 +74,16 @@ app.use(express.json());
 app.get('/', function (req, res) {
   let endpoints = [];
 
+  endpoints.push("** READS **");
+
   // format here should be [address] - [short desc]. [DATATYPE]
   endpoints.push('/read/neos/songstress - Returns the latest values for songstress from NEOS. JSON');
   endpoints.push('/read/neos/possibilon - Returns the latest values for possibilon from NEOS. JSON');
 
-  // endpoints.push('/read/dwave/songstress - Returns the latest values for songstress from DWAVE. JSON');
-  // endpoints.push('/read/dwave/possibilon - Returns the latest values for possibilon from DWAVE. JSON');
+  endpoints.push('/read/dwave/songstress - Returns the latest values for songstress from DWAVE. JSON');
+  endpoints.push('/read/dwave/possibilon - Returns the latest values for possibilon from DWAVE. JSON');
 
+  endpoints.push("** WRITES **");
   // endpoints.push('/put/neos - Records the POST value from Neos. STRING');
   // endpoints.push('/put/quantum - Records the response from the quantum annealer. STRING');
 
@@ -76,34 +102,32 @@ app.get('/', function (req, res) {
  * Hit this endpoint to get the latest value we've recorded from NEOS for SONGSTRESS
  */
  app.get('/read/neos/songstress', function (req, res) {
-  // retrieve color value from our store
-  // return the color value
-
-  res.send(songstress);
+  res.send(neos_songstress);
 });
 
 /**
  * Hit this endpoint to get the latest value we've recorded from NEOS for POSSIBILON
  */
  app.get('/read/neos/possibilon', function (req, res) {
-  // retrieve color value from our store
-  // return the color value
-
-  res.send(possibilon);
+  res.send(neos_possibilon);
 });
 
 /**
- * Hit this endpoint to get the response we have from GPT-3
+ * Hit this endpoint to get the response we have from DWAVE for SONGSTRESS
  */
-app.get('/read/gpt-3', function (req, res) {
-  // retrieve the latest response from GPT-3
-  // return the gpt-3 value
-
+app.get('/read/dwave/songstress', function (req, res) {
+  res.send(dwave_songstress);
 });
 
+/**
+ * Hit this endpoint to get the response we have from DWAVE for POSSIBILON
+ */
+ app.get('/read/dwave/possibilon', function (req, res) {
+  res.send(dwave_possibilon);
+});
 
 /******
- * PUTS
+ * WRITES
  */
 
 /**
