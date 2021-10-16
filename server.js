@@ -6,7 +6,41 @@ const app = express();
 
 const PORT = process.env.PORT || 8080;
 
-var storedColor = "#000000"
+// INITial values for songstress and possibion which can be overwritten in memory and ensures we always have a value
+var songstress = {
+  "songstress": [
+    "golden air mountain",
+    "dirty spring lake",
+    "tiny orbiting one",
+    "snowing face again",
+    "clean island universe",
+    "goddess transhuman showing"
+  ]
+}
+
+var possibilon = {
+  "possibilon": {
+    "architype": "furry",
+    "color": "green",
+    "really_want": {
+      "-.8": "forest castle plants big battle social cozy old creator"
+    },
+    "comfortable": {
+      "-.05": "desert garden pool empty business chill minecraft new no_creator"
+    },
+    "do_not_care": {
+      "0": "space dungeon snow gravity chat event simple morning creator"
+    },
+    "prefer": {
+      ".05": "office mountain sky big educational abandoned vrchat day no_creator"
+    },
+    "do_not_want": {
+      "-1": "club lab sea empty competition social halloween evening creator"
+    }
+  }
+}
+
+
 
 app.use(express.json());
 
@@ -18,57 +52,59 @@ app.get('/', function (req, res) {
   let endpoints = [];
 
   // format here should be [address] - [short desc]. [DATATYPE]
-  endpoints.push('/put/neos - Records the POST value from Neos. STRING');
-  endpoints.push('/put/quantum - Records the response from the quantum annealer. STRING');
-  endpoints.push('/read/color - Returns the latest color value recorded. STRING');
-  endpoints.push('/read/gpt-3 - Returns the latest response form GPT-3. STRING');
-  endpoints.push('/ws/neos - Communication channel with Neos WebsocketClient');
+  endpoints.push('/read/neos/songstress - Returns the latest values for songstress from NEOS. JSON');
+  endpoints.push('/read/neos/possibilon - Returns the latest values for possibilon from NEOS. JSON');
+
+  // endpoints.push('/read/dwave/songstress - Returns the latest values for songstress from DWAVE. JSON');
+  // endpoints.push('/read/dwave/possibilon - Returns the latest values for possibilon from DWAVE. JSON');
+
+  // endpoints.push('/put/neos - Records the POST value from Neos. STRING');
+  // endpoints.push('/put/quantum - Records the response from the quantum annealer. STRING');
+
+  // endpoints.push('/ws/neos - Communication channel with Neos WebsocketClient');
 
   let output = endpoints.map(out => out);
 
   res.send(output);
 });
 
+/*******
+ * READS
+ */
+
+/**
+ * Hit this endpoint to get the latest value we've recorded from NEOS for SONGSTRESS
+ */
+ app.get('/read/neos/songstress', function (req, res) {
+  // retrieve color value from our store
+  // return the color value
+
+  res.send(songstress);
+});
+
+/**
+ * Hit this endpoint to get the latest value we've recorded from NEOS for POSSIBILON
+ */
+ app.get('/read/neos/possibilon', function (req, res) {
+  // retrieve color value from our store
+  // return the color value
+
+  res.send(possibilon);
+});
+
+/**
+ * Hit this endpoint to get the response we have from GPT-3
+ */
+app.get('/read/gpt-3', function (req, res) {
+  // retrieve the latest response from GPT-3
+  // return the gpt-3 value
+
+});
+
+
 /******
  * PUTS
  */
-
-
-/****** Data format from neos
-{
-  "aesthetic": {
-    "forest_city": 0,
-    "dark_light": 0,
-    "beach_mountain": 0,
-    "large_small": 1,
-    "realistic_abstract": 0
-  },
-  "staff": {
-    "many_none": 0
-  },
-  "experience": {
-    "new_old": 0
-  },
-  "avatar_type": {
-    "furry_anime": 1,
-    "human_robot": 0
-  },
-  "population": {
-    "furry_anime": 0,
-    "human_robot": -1,
-    "full_empty": 1
-  },
-  "emotion": {
-    "intensity": -1,
-    "peaceful": -0.06188899,
-    "loving": -0.06188899,
-    "uplifting": -0.06188899,
-    "somber": -0.06188899,
-    "angry": -1,
-    "vengeful": -0.06188899
-  }
-}
-*/
 
 /**
  * Neos hits this endpoint in order to give us the values to record.
@@ -95,28 +131,6 @@ app.get('/put/quantum', function (req, res) {
 });
 
 
-/*******
- * READS
- */
-
-/**
- * Hit this endpoint to get the latest color value we've recorded.
- */
-app.get('/read/color', function (req, res) {
-  // retrieve color value from our store
-  // return the color value
-
-  res.send(storedColor);
-});
-
-/**
- * Hit this endpoint to get the response we have from GPT-3
- */
-app.get('/read/gpt-3', function (req, res) {
-  // retrieve the latest response from GPT-3
-  // return the gpt-3 value
-
-});
 
 /************
  * Websockets
