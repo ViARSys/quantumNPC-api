@@ -77,15 +77,16 @@ app.get('/', function (req, res) {
   endpoints.push("** READS **");
 
   // format here should be [address] - [short desc]. [DATATYPE]
-  endpoints.push('/read/neos/songstress - Returns the latest values for songstress from NEOS. JSON');
-  endpoints.push('/read/neos/possibilon - Returns the latest values for possibilon from NEOS. JSON');
-
-  endpoints.push('/read/dwave/songstress - Returns the latest values for songstress from DWAVE. JSON');
-  endpoints.push('/read/dwave/possibilon - Returns the latest values for possibilon from DWAVE. JSON');
+  endpoints.push('/read/neos/songstress - Returns the latest values for SONGSTRESS from NEOS. JSON');
+  endpoints.push('/read/neos/possibilon - Returns the latest values for POSSIBILON from NEOS. JSON');
+  endpoints.push('/read/dwave/songstress - Returns the latest values for SONGSTRESS from DWAVE. JSON');
+  endpoints.push('/read/dwave/possibilon - Returns the latest values for POSSIBILON from DWAVE. JSON');
 
   endpoints.push("** WRITES **");
-  // endpoints.push('/put/neos - Records the POST value from Neos. STRING');
-  // endpoints.push('/put/quantum - Records the response from the quantum annealer. STRING');
+  endpoints.push('/post/neos/songstress - Records the POST value from NEOS for SONGSTRESS. STRING');
+  endpoints.push('/post/neos/possibilon - Records the POST value from NEOS for POSSIBILON. STRING');
+  endpoints.push('/post/dwave/songstress - Records the POST value from DWAVE for SONGSTRESS. STRING');
+  endpoints.push('/post/dwave/possibilon - Records the POST value from DWAVE for POSSIBILON. STRING');
 
   // endpoints.push('/ws/neos - Communication channel with Neos WebsocketClient');
 
@@ -94,65 +95,69 @@ app.get('/', function (req, res) {
   res.send(output);
 });
 
-/*******
+/********
  * READS
+ * 
+ * These read the variable back as the response
  */
 
-/**
- * Hit this endpoint to get the latest value we've recorded from NEOS for SONGSTRESS
- */
+// Hit this endpoint to get the latest value we've recorded from NEOS for SONGSTRESS
  app.get('/read/neos/songstress', function (req, res) {
   res.send(neos_songstress);
 });
 
-/**
- * Hit this endpoint to get the latest value we've recorded from NEOS for POSSIBILON
- */
+// Hit this endpoint to get the latest value we've recorded from NEOS for POSSIBILON
  app.get('/read/neos/possibilon', function (req, res) {
   res.send(neos_possibilon);
 });
 
-/**
- * Hit this endpoint to get the response we have from DWAVE for SONGSTRESS
- */
+// Hit this endpoint to get the response we have from DWAVE for SONGSTRESS
 app.get('/read/dwave/songstress', function (req, res) {
   res.send(dwave_songstress);
 });
 
-/**
- * Hit this endpoint to get the response we have from DWAVE for POSSIBILON
- */
+// Hit this endpoint to get the response we have from DWAVE for POSSIBILON
  app.get('/read/dwave/possibilon', function (req, res) {
   res.send(dwave_possibilon);
 });
 
-/******
+
+/*********
  * WRITES
+ * 
+ * These overwrite the variable in memory 
+ * then send it back as a response
  */
 
-/**
- * Neos hits this endpoint in order to give us the values to record.
- */
-app.post('/put/neos', function (req, res) {
-  // get the value from the response and parse
-  var neos_emotions = req.body.emotions;
-  var neos_avatar_type = req.body.avatar_type;
-  var neos_population = req.body.population;
-  
-  // clean the value
-  // record the value to the store
-  console.log(req.body);
-  res.send(req.body);
+// Post to this endpoint from NEOS to overwrite the SONGSTRESS value
+app.post('/post/neos/songstress', function (req, res) {
+  let neos_songstress = req.body.songstress;
+  res.send(neos_songstress);
 });
 
-/**
- * Chicago Quantum will hit this enpoint in order to give us the value returned from the annealer.
- */
-app.get('/put/quantum', function (req, res) {
-  // clean the quantum value
-  // record the quantum value to the store
-
+// POST to this endpoint from NEOS to overwrite the POSSIBILON value
+app.post('/post/neos/possibilon', function (req, res) {
+  let neos_possibilon = req.body.possibilon;
+  res.send(neos_possibilon);
 });
+
+// POST to this endpoint from DWAVE to overwrite the SONGSTRESS value
+app.post('/post/dwave/songstress', function (req, res) {
+  let dwave_songstress = req.body.songstress;
+  res.send(dwave_songstress);
+});
+
+// POST to this endpoint from DWAVE to overwrite the POSSIBILON value
+app.post('/post/dwave/possibilon', function (req, res) {
+  let dwave_possibilon = req.body.possibilon;
+  res.send(dwave_possibilon);
+});
+
+/** To test these
+ * 1. hit the read endpoint and record the value (ex: /read/neos/songstress)
+ * 2. post to the write endpoint (ex: /post/neos/songstress)
+ * 3. hit the read endpoint again to note value change (ex: /read/neos/songstress)
+ */
 
 
 
