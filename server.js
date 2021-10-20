@@ -131,25 +131,25 @@ app.get('/read/dwave/songstress', function (req, res) {
 
 // Post to this endpoint from NEOS to overwrite the SONGSTRESS value
 app.post('/post/neos/songstress', function (req, res) {
-  let neos_songstress = req.body.songstress;
+  neos_songstress = req.body.songstress;
   res.send(neos_songstress);
 });
 
 // POST to this endpoint from NEOS to overwrite the POSSIBILON value
 app.post('/post/neos/possibilon', function (req, res) {
-  let neos_possibilon = req.body.possibilon;
+  neos_possibilon = req.body.possibilon;
   res.send(neos_possibilon);
 });
 
 // POST to this endpoint from DWAVE to overwrite the SONGSTRESS value
 app.post('/post/dwave/songstress', function (req, res) {
-  let dwave_songstress = req.body.songstress;
+  dwave_songstress = req.body.songstress;
   res.send(dwave_songstress);
 });
 
 // POST to this endpoint from DWAVE to overwrite the POSSIBILON value
 app.post('/post/dwave/possibilon', function (req, res) {
-  let dwave_possibilon = req.body.possibilon;
+  dwave_possibilon = req.body.possibilon;
   res.send(dwave_possibilon);
 });
 
