@@ -132,24 +132,32 @@ app.get('/read/dwave/songstress', function (req, res) {
 // Post to this endpoint from NEOS to overwrite the SONGSTRESS value
 app.post('/post/neos/songstress', function (req, res) {
   neos_songstress = req.body.songstress;
+  // append the current time  
+  neos_songstress.timestamp = new Date();
   res.send(neos_songstress);
 });
 
 // POST to this endpoint from NEOS to overwrite the POSSIBILON value
 app.post('/post/neos/possibilon', function (req, res) {
   neos_possibilon = req.body.possibilon;
+  // append the current time
+  neos_possibilon.timestamp = new Date();
   res.send(neos_possibilon);
 });
 
 // POST to this endpoint from DWAVE to overwrite the SONGSTRESS value
 app.post('/post/dwave/songstress', function (req, res) {
   dwave_songstress = req.body.songstress;
+  // append the current time
+  dwave_songstress.timestamp = new Date();
   res.send(dwave_songstress);
 });
 
 // POST to this endpoint from DWAVE to overwrite the POSSIBILON value
 app.post('/post/dwave/possibilon', function (req, res) {
   dwave_possibilon = req.body.possibilon;
+  // append the current time
+  dwave_possibilon.timestamp = new Date();
   res.send(dwave_possibilon);
 });
 
