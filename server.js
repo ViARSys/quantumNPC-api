@@ -74,9 +74,9 @@ app.use(express.json());
 app.get('/', function (req, res) {
   let endpoints = [];
 
-  endpoints.push("** READS **");
-
   // format here should be [address] - [short desc]. [DATATYPE]
+
+  endpoints.push("** READS **");
   endpoints.push('/read/neos/songstress - Returns the latest values for SONGSTRESS from NEOS. JSON');
   endpoints.push('/read/neos/possibilon - Returns the latest values for POSSIBILON from NEOS. JSON');
   endpoints.push('/read/dwave/songstress - Returns the latest values for SONGSTRESS from DWAVE. JSON');
@@ -103,21 +103,29 @@ app.get('/', function (req, res) {
 
 // Hit this endpoint to get the latest value we've recorded from NEOS for SONGSTRESS
  app.get('/read/neos/songstress', function (req, res) {
+  // append the current time  
+  neos_songstress.timestamp = new Date();
   res.send(neos_songstress);
 });
 
 // Hit this endpoint to get the latest value we've recorded from NEOS for POSSIBILON
  app.get('/read/neos/possibilon', function (req, res) {
+  // append the current time
+  neos_possibilon.timestamp = new Date();
   res.send(neos_possibilon);
 });
 
 // Hit this endpoint to get the response we have from DWAVE for SONGSTRESS
 app.get('/read/dwave/songstress', function (req, res) {
+  // append the current time
+  dwave_songstress.timestamp = new Date();
   res.send(dwave_songstress);
 });
 
 // Hit this endpoint to get the response we have from DWAVE for POSSIBILON
  app.get('/read/dwave/possibilon', function (req, res) {
+  // append the current time
+  dwave_possibilon.timestamp = new Date();
   res.send(dwave_possibilon);
 });
 
