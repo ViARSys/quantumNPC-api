@@ -210,6 +210,28 @@ app.post('/post/dwave/possibilon', function (req, res) {
 /******************
  * GPT-3 processing
  */
+const OpenAI = require('openai-api');
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const openai = new OpenAI(OPENAI_API_KEY);
+
+async function get_gpt_response(str) {
+	gptResponse = await openai.complete({
+		engine: 'davinci',
+		prompt: str
+		maxTokens: 5,
+		temperature: 0.9,
+		topP: 1,
+		presencePenalty: 0,
+		frequencyPenalty: 0,
+		bestOf: 1,
+		n: 1,
+		stream: false,
+		stop: ['\n', "testing"]
+	    });
+	return gptResponse
+}
+
+//need to use async for functions which use openai
 
 
 
