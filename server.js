@@ -163,7 +163,8 @@ app.post('/post/neos/possibilon', function (req, res) {
 // POST to this endpoint from DWAVE to overwrite the SONGSTRESS value
 app.post('/post/dwave/songstress', async function (req, res) {
   dwave_songstress = req.body.songstress;
-  dwave_songstress.completion = await get_gpt_response(dwave_songstress_prompt_fixed+dwave_songstress.consecutive.join("\n")+"\n");
+  dwave_songstress.consecutive = dwave_songstress.split(",");
+  dwave_songstress.completion = await get_gpt_response(dwave_songstress_prompt_fixed+dwave_songstress.consecutive.join("\n"));
   console.log(dwave_songstress.completion);
   // append the current time
   dwave_songstress.timestamp = new Date();
