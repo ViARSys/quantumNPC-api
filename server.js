@@ -60,6 +60,10 @@ var dwave_songstress = {
   ]
 }
 
+dwave_songstress_prompt_fixed = `Lyrics by Songstress
+[here come examples lyrics by liz]
+`
+
 var dwave_possibilon = [
   "unsure what this response will look like yet"
 ]
@@ -116,8 +120,11 @@ app.get('/', function (req, res) {
 });
 
 // Hit this endpoint to get the response we have from DWAVE for SONGSTRESS
-app.get('/read/dwave/songstress', function (req, res) {
+app.get('/read/dwave/songstress', async function (req, res) {
   // append the current time
+  //this is here just for testing gpt3
+  //dwave_songstress.completion = await get_gpt_response(dwave_songstress_prompt_fixed+dwave_songstress.consecutive.join("\n")+"\n");
+  //console.log(dwave_songstress.completion);
   dwave_songstress.timestamp = new Date();
   res.send(dwave_songstress);
 });
@@ -154,8 +161,10 @@ app.post('/post/neos/possibilon', function (req, res) {
 });
 
 // POST to this endpoint from DWAVE to overwrite the SONGSTRESS value
-app.post('/post/dwave/songstress', function (req, res) {
+app.post('/post/dwave/songstress', async function (req, res) {
   dwave_songstress = req.body.songstress;
+  dwave_songstress.completion = await get_gpt_response(dwave_songstress_prompt_fixed+dwave_songstress.consecutive.join("\n")+"\n");
+  console.log(dwave_songstress.completion);
   // append the current time
   dwave_songstress.timestamp = new Date();
   res.send(dwave_songstress);
@@ -217,8 +226,8 @@ const openai = new OpenAI(OPENAI_API_KEY);
 async function get_gpt_response(str) {
 	gptResponse = await openai.complete({
 		engine: 'davinci',
-		prompt: str
-		maxTokens: 5,
+		prompt: str,
+		maxTokens: 50,
 		temperature: 0.9,
 		topP: 1,
 		presencePenalty: 0,
@@ -226,13 +235,12 @@ async function get_gpt_response(str) {
 		bestOf: 1,
 		n: 1,
 		stream: false,
-		stop: ['\n', "testing"]
+		//stop: ['\n', "testing"]
 	    });
-	return gptResponse
+	return gptResponse.data.choices[0].text;
 }
 
 //need to use async for functions which use openai
-
 
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}!`));
