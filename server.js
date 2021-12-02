@@ -221,7 +221,7 @@ async function get_gpt_response(str) {
   gptResponse = await openai.complete({
     engine: 'davinci',
     prompt: str,
-    maxTokens: 50,
+    maxTokens: 100,
     temperature: 0.9,
     topP: 1,
     presencePenalty: 0,
