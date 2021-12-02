@@ -63,9 +63,10 @@ var dwave_songstress = {
 }
 
 dwave_songstress_prompt_fixed = `
-The Songstress is an Artificial Intelligence that write poems in the style of the musician and writer JE Solo. The Songstress can accurately predict the future. Here is a new work of poetry by the Songstress:
+The Songstress is an Artificial Intelligence that write poems in the style of the musician and writer JE Solo. The Songstress can accurately predict the future. Here is a new work of poetry by the Songstress.
 
-<poem by the Songstress>
+Poem by the Songstress:
+
 `
 
 var dwave_possibilon = [
