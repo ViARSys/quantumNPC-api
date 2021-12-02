@@ -158,7 +158,7 @@ app.post('/post/neos/possibilon', function (req, res) {
 app.post('/post/dwave/songstress', async function (req, res) {
   dwave_songstress = req.body;
 
-  dwave_songstress.gpt3 = await get_gpt_response(dwave_songstress_prompt_fixed+dwave_songstress.songstress.join(""));
+  dwave_songstress.gpt3 = await get_gpt_response(dwave_songstress_prompt_fixed+dwave_songstress.songstress.join("\n"));
   console.log(dwave_songstress.gpt3);
 
   // append the current time
