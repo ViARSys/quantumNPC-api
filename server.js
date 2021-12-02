@@ -15,7 +15,8 @@ var neos_songstress = {
     "snowing face again",
     "clean island universe",
     "goddess transhuman showing"
-  ]
+  ],
+  "timestamp":""
 }
 
 var neos_possibilon = {
@@ -37,11 +38,12 @@ var neos_possibilon = {
     "do_not_want": {
       "-1": "club lab sea empty competition social halloween evening creator"
     }
-  }
+  },
+  "timestamp":""
 }
 
 // DWAVE will return random lyrics from it's probability score
-// we can choose to use the random ones, or 
+// we can choose to use the random ones, or
 // take the first one along with the next 4 consequtive lines from that song
 var dwave_songstress = {
   "randomized": [
@@ -101,60 +103,49 @@ app.get('/', function (req, res) {
 
 /********
  * READS
- * 
+ *
  * These read the variable back as the response
  */
 
 // Hit this endpoint to get the latest value we've recorded from NEOS for SONGSTRESS
  app.get('/read/neos/songstress', function (req, res) {
-  // append the current time  
-  neos_songstress.timestamp = new Date();
   res.send(neos_songstress);
 });
 
 // Hit this endpoint to get the latest value we've recorded from NEOS for POSSIBILON
  app.get('/read/neos/possibilon', function (req, res) {
-  // append the current time
-  neos_possibilon.timestamp = new Date();
   res.send(neos_possibilon);
 });
 
 // Hit this endpoint to get the response we have from DWAVE for SONGSTRESS
 app.get('/read/dwave/songstress', async function (req, res) {
-  // append the current time
-  //this is here just for testing gpt3
-  //dwave_songstress.completion = await get_gpt_response(dwave_songstress_prompt_fixed+dwave_songstress.consecutive.join("\n")+"\n");
-  //console.log(dwave_songstress.completion);
-  dwave_songstress.timestamp = new Date();
   res.send(dwave_songstress);
 });
 
 // Hit this endpoint to get the response we have from DWAVE for POSSIBILON
  app.get('/read/dwave/possibilon', function (req, res) {
-  // append the current time
-  dwave_possibilon.timestamp = new Date();
   res.send(dwave_possibilon);
 });
 
 
 /*********
  * WRITES
- * 
- * These overwrite the variable in memory 
+ *
+ * These overwrite the variable in memory
  * then send it back as a response
  */
 
 // Post to this endpoint from NEOS to overwrite the SONGSTRESS value
 app.post('/post/neos/songstress', function (req, res) {
-  neos_songstress = req.body.songstress;
-  // append the current time  
+  neos_songstress = req.body;
+  // append the current time
   neos_songstress.timestamp = new Date();
   res.send(neos_songstress);
 });
 
 // POST to this endpoint from NEOS to overwrite the POSSIBILON value
 app.post('/post/neos/possibilon', function (req, res) {
-  neos_possibilon = req.body.possibilon;
+  neos_possibilon = req.body;
   // append the current time
   neos_possibilon.timestamp = new Date();
   res.send(neos_possibilon);
@@ -162,12 +153,14 @@ app.post('/post/neos/possibilon', function (req, res) {
 
 // POST to this endpoint from DWAVE to overwrite the SONGSTRESS value
 app.post('/post/dwave/songstress', async function (req, res) {
-  dwave_songstress = req.body.songstress;
-  dwave_songstress.consecutive = dwave_songstress.split(",");
-  dwave_songstress.completion = await get_gpt_response(dwave_songstress_prompt_fixed+dwave_songstress.consecutive.join("\n"));
-  console.log(dwave_songstress.completion);
+  dwave_songstress = req.body;
+
+  dwave_songstress.gpt3 = await get_gpt_response(dwave_songstress_prompt_fixed+dwave_songstress.songstress.join(""));
+  console.log(dwave_songstress.gpt3);
+
   // append the current time
   dwave_songstress.timestamp = new Date();
+
   res.send(dwave_songstress);
 });
 
@@ -225,20 +218,20 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const openai = new OpenAI(OPENAI_API_KEY);
 
 async function get_gpt_response(str) {
-	gptResponse = await openai.complete({
-		engine: 'davinci',
-		prompt: str,
-		maxTokens: 50,
-		temperature: 0.9,
-		topP: 1,
-		presencePenalty: 0,
-		frequencyPenalty: 0,
-		bestOf: 1,
-		n: 1,
-		stream: false,
-		//stop: ['\n', "testing"]
-	    });
-	return gptResponse.data.choices[0].text;
+  gptResponse = await openai.complete({
+    engine: 'davinci',
+    prompt: str,
+    maxTokens: 50,
+    temperature: 0.9,
+    topP: 1,
+    presencePenalty: 0,
+    frequencyPenalty: 0,
+    bestOf: 1,
+    n: 1,
+    stream: false,
+    //stop: ['\n', "testing"]
+  });
+  return gptResponse.data.choices[0].text;
 }
 
 //need to use async for functions which use openai
