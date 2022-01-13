@@ -149,11 +149,22 @@ app.post('/post/neos/songstress', function (req, res) {
 });
 
 // POST to this endpoint from NEOS to overwrite the POSSIBILON value
+let dwave_data = {}
 app.post('/post/neos/possibilon', function (req, res) {
   neos_possibilon = req.body;
+  for (const [key,val] of neos_possibilion.entries()) {
+  for (item of val.split(" ")) {
+    if (item in dwave_data) {
+      dwave_data[item] += parseFloat(key)
+    }
+    else {
+      dwave[item] = parseFloat(key)
+    }
+  }
+}
   // append the current time
-  neos_possibilon.timestamp = new Date();
-  res.send(neos_possibilon);
+  dwave_data.timestamp = new Date();
+  res.send(dwave_data);
 });
 
 // POST to this endpoint from DWAVE to overwrite the SONGSTRESS value
@@ -170,22 +181,11 @@ app.post('/post/dwave/songstress', async function (req, res) {
 });
 
 // POST to this endpoint from DWAVE to overwrite the POSSIBILON value
-let dwave_data = {}
 app.post('/post/dwave/possibilon', function (req, res) {
   dwave_possibilon = req.body.possibilon;
-  for (const [key,val] of dwave_possibilion.entries()) {
-  for (item of val.split(" ")) {
-    if (item in dwave_data) {
-      dwave_data[item] += parseFloat(key)
-    }
-    else {
-      dwave[item] = parseFloat(key)
-    }
-  }
-}
   // append the current time
-  dwave_data.timestamp = new Date();
-  res.send(dwave_data);
+  dwave_possibilon.timestamp = new Date();
+  res.send(dwave_possibilion);
 });
 
 /** To test these
