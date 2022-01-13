@@ -98,6 +98,7 @@ app.get('/', function (req, res) {
 // Hit this endpoint to get the latest value we've recorded from NEOS for POSSIBILON
  app.get('/read/neos/possibilon', function (req, res) {
   res.send(neos_possibilon);
+  //res.send("HI");
 });
 
 // Hit this endpoint to get the response we have from DWAVE for SONGSTRESS
@@ -130,7 +131,7 @@ app.post('/post/neos/songstress', function (req, res) {
 //let neos_possibilon = {}
 app.post('/post/neos/possibilon', function (req, res) {
   received_data = req.body;
-  console.log(received_data.possibilon)
+  //console.log(received_data.possibilon)
   for (const [key1,val1] of Object.entries(received_data.possibilon)) {
     if (key1 == "architype") {
       neos_possibilon[val1] = 1
