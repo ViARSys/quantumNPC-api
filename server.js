@@ -151,18 +151,27 @@ app.post('/post/neos/songstress', function (req, res) {
 // POST to this endpoint from NEOS to overwrite the POSSIBILON value
 let dwave_data = {}
 app.post('/post/neos/possibilon', function (req, res) {
-  neos_possibilon = req.body;
-  for (const [key1,val1] of neos_possibilion.possibilion.entries()) {
-    for (const [key2,val2] of val1.entries()) {
-	  for (item of val2.split(" ")) {
-	    if (item in dwave_data) {
-	      dwave_data[item] += parseFloat(key2)
+  neos_possibilion = req.body;
+  console.log(neos_possibilion.possibilion)
+  for (const [key1,val1] of Object.entries(neos_possibilion.possibilion)) {
+    if (key1 == "architype") {
+      dwave_data[val1] = 1
+    }
+    else if (key1 == "color") {
+      dwave_data[val1] = 1
+    }
+    else {
+	    for (const [key2,val2] of Object.entries(val1)) {
+		  for (item of val2.split(" ")) {
+		    if (item in dwave_data) {
+		      dwave_data[item] += parseFloat(key2)
+		    }
+		    else {
+		      dwave_data[item] = parseFloat(key2)
+		    }
+		  }
 	    }
-	    else {
-	      dwave[item] = parseFloat(key2B)
-	    }
-	  }
-  }
+    }
 }
   // append the current time
   dwave_data.timestamp = new Date();
