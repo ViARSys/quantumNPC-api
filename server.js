@@ -19,7 +19,7 @@ var neos_songstress = {
   "timestamp":""
 }
 
-let neos_possiblion = {}
+let neos_possibilon = {}
 // DWAVE will return random lyrics from it's probability score
 // we can choose to use the random ones, or
 // take the first one along with the next 4 consequtive lines from that song
@@ -127,33 +127,33 @@ app.post('/post/neos/songstress', function (req, res) {
 });
 
 // POST to this endpoint from NEOS to overwrite the POSSIBILON value
-let neos_possibilion = {}
+//let neos_possibilon = {}
 app.post('/post/neos/possibilon', function (req, res) {
   received_data = req.body;
-  console.log(received_data.possibilion)
-  for (const [key1,val1] of Object.entries(received_data.possibilion)) {
+  console.log(received_data.possibilon)
+  for (const [key1,val1] of Object.entries(received_data.possibilon)) {
     if (key1 == "architype") {
-      neos_possibilion[val1] = 1
+      neos_possibilon[val1] = 1
     }
     else if (key1 == "color") {
-      neos_possibilion[val1] = 1
+      neos_possibilon[val1] = 1
     }
     else {
 	    for (const [key2,val2] of Object.entries(val1)) {
 		  for (item of val2.split(" ")) {
-		    if (item in neos_possibilion) {
-		      neos_possibilion[item] += parseFloat(key2)
+		    if (item in neos_possibilon) {
+		      neos_possibilon[item] += parseFloat(key2)
 		    }
 		    else {
-		      neos_possibilion[item] = parseFloat(key2)
+		      neos_possibilon[item] = parseFloat(key2)
 		    }
 		  }
 	    }
     }
 }
   // append the current time
-  neos_possibilion.timestamp = new Date();
-  res.send(neos_possibilion);
+  neos_possibilon.timestamp = new Date();
+  res.send(neos_possibilon);
 });
 
 // POST to this endpoint from DWAVE to overwrite the SONGSTRESS value
