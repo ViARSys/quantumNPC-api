@@ -152,14 +152,16 @@ app.post('/post/neos/songstress', function (req, res) {
 let dwave_data = {}
 app.post('/post/neos/possibilon', function (req, res) {
   neos_possibilon = req.body;
-  for (const [key,val] of neos_possibilion.entries()) {
-  for (item of val.split(" ")) {
-    if (item in dwave_data) {
-      dwave_data[item] += parseFloat(key)
-    }
-    else {
-      dwave[item] = parseFloat(key)
-    }
+  for (const [key1,val1] of neos_possibilion.possibilion.entries()) {
+    for (const [key2,val2] of val1.entries()) {
+	  for (item of val2.split(" ")) {
+	    if (item in dwave_data) {
+	      dwave_data[item] += parseFloat(key2)
+	    }
+	    else {
+	      dwave[item] = parseFloat(key2B)
+	    }
+	  }
   }
 }
   // append the current time
