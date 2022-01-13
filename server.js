@@ -19,29 +19,7 @@ var neos_songstress = {
   "timestamp":""
 }
 
-var neos_possibilon = {
-  "possibilon": {
-    "architype": "furry",
-    "color": "green",
-    "really_want": {
-      "-.8": "forest castle plants big battle social cozy old creator"
-    },
-    "comfortable": {
-      "-.05": "desert garden pool empty business chill minecraft new no_creator"
-    },
-    "do_not_care": {
-      "0": "space dungeon snow gravity chat event simple morning creator"
-    },
-    "prefer": {
-      ".05": "office mountain sky big educational abandoned vrchat day no_creator"
-    },
-    "do_not_want": {
-      "-1": "club lab sea empty competition social halloween evening creator"
-    }
-  },
-  "timestamp":""
-}
-
+let neos_possiblion = {}
 // DWAVE will return random lyrics from it's probability score
 // we can choose to use the random ones, or
 // take the first one along with the next 4 consequtive lines from that song
@@ -151,9 +129,9 @@ app.post('/post/neos/songstress', function (req, res) {
 // POST to this endpoint from NEOS to overwrite the POSSIBILON value
 let neos_possibilion = {}
 app.post('/post/neos/possibilon', function (req, res) {
-  neos_possibilion = req.body;
-  console.log(neos_possibilion.possibilion)
-  for (const [key1,val1] of Object.entries(neos_possibilion.possibilion)) {
+  received_data = req.body;
+  console.log(received_data.possibilion)
+  for (const [key1,val1] of Object.entries(received_data.possibilion)) {
     if (key1 == "architype") {
       neos_possibilion[val1] = 1
     }
@@ -163,7 +141,7 @@ app.post('/post/neos/possibilon', function (req, res) {
     else {
 	    for (const [key2,val2] of Object.entries(val1)) {
 		  for (item of val2.split(" ")) {
-		    if (item in dwave_data) {
+		    if (item in neos_possibilion) {
 		      neos_possibilion[item] += parseFloat(key2)
 		    }
 		    else {
