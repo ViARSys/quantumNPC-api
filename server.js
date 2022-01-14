@@ -1,5 +1,7 @@
 
 const express = require('express');
+const http = require('http')
+
 const app = express();
 //const expressWS = require('express-ws');
 //const ews = expressWS(app);
@@ -152,9 +154,26 @@ app.post('/post/neos/possibilon', function (req, res) {
 	    }
     }
 }
+        res.send(neos_possibilon);
+return;
+	const options = {
+	  hostname: '142.93.45.103',
+	  port: 6960,
+	  path: '/',
+	  method: 'GET'
+	}
+
+	const req2 = http.request(options, res2 => {
+	  console.log(`statusCode: ${res2.statusCode}`)
+
+	  res2.on('data', d => {
+	    neos_possibilon.values = neos_possibilon
+            neos_possibilon.timestamp = new Date();
+	    neos_possibilon.worlds = d
+            res.send(neos_possibilon);
+	  })
+	})
   // append the current time
-  neos_possibilon.timestamp = new Date();
-  res.send(neos_possibilon);
 });
 
 // POST to this endpoint from DWAVE to overwrite the SONGSTRESS value
@@ -172,7 +191,8 @@ app.post('/post/dwave/songstress', async function (req, res) {
 
 // POST to this endpoint from DWAVE to overwrite the POSSIBILON value
 app.post('/post/dwave/possibilon', function (req, res) {
-  dwave_possibilon = req.body.possibilon;
+  //dwave_possibilon = req.body.possibilon;
+  dwave_possibilon = req.body;
   // append the current time
   dwave_possibilon.timestamp = new Date();
   res.send(dwave_possibilion);
@@ -242,5 +262,5 @@ async function get_gpt_response(str) {
 
 //need to use async for functions which use openai
 
-
 app.listen(PORT, () => console.log(`Listening on port ${PORT}!`));
+
