@@ -162,6 +162,7 @@ return;
 	  path: '/',
 	  method: 'GET'
 	}
+	console.log(options);
 
 	const req2 = http.request(options, res2 => {
 	  console.log(`statusCode: ${res2.statusCode}`)
@@ -195,7 +196,7 @@ app.post('/post/dwave/possibilon', function (req, res) {
   dwave_possibilon = req.body;
   // append the current time
   dwave_possibilon.timestamp = new Date();
-  res.send(dwave_possibilion);
+  res.send(dwave_possibilon);
 });
 
 /** To test these
