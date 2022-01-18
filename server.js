@@ -174,7 +174,11 @@ http.get('http://142.93.45.103:6960', res2 => {
 	  for (const [key1,val1] of Object.entries(thingo)) {
 	    //console.log(val1);
 	    for (let item of val1) {
-               neos_possibilon[item] += 0.1
+	       if (item in neos_possibilon) {
+                   neos_possibilon[item] += 0.1
+	       } else {
+                   neos_possibilon[item] = 0.1
+	       }
             } 
           }
 	    neos_possibilon_world_data = {}
