@@ -154,26 +154,36 @@ app.post('/post/neos/possibilon', function (req, res) {
 	    }
     }
 }
-        res.send(neos_possibilon);
-return;
-	const options = {
-	  hostname: '142.93.45.103',
-	  port: 6960,
-	  path: '/',
-	  method: 'GET'
-	}
-	console.log(options);
+        //res.send(neos_possibilon);
+//return;
 
-	const req2 = http.request(options, res2 => {
-	  console.log(`statusCode: ${res2.statusCode}`)
+http.get('http://142.93.45.103:6960', res2 => {
+  let data = [];
+  const headerDate = res2.headers && res2.headers.date ? res2.headers.date : 'no response date';
+  console.log('Status Code:', res2.statusCode);
+  console.log('Date in Response header:', headerDate);
 
-	  res2.on('data', d => {
-	    neos_possibilon.values = neos_possibilon
-            neos_possibilon.timestamp = new Date();
-	    neos_possibilon.worlds = d
-            res.send(neos_possibilon);
-	  })
-	})
+  res2.on('data', chunk => {
+    data.push(chunk);
+  });
+  res2.on('end', () => {
+    console.log('Response ended: ');
+    const thingo = JSON.parse(Buffer.concat(data).toString());
+	console.log(thingo)
+	  for (const [key1,val1] of Object.entries(thingo)) {
+	    for (item in val1) {
+               neos_possibilon[item] += 0.1
+            } 
+          }
+	    let response = {}
+	    response.values = neos_possibilon
+            response.timestamp = new Date();
+	    response.worlds = thingo
+            res.send(response);
+  });
+});
+
+
   // append the current time
 });
 
