@@ -171,7 +171,8 @@ http.get('http://142.93.45.103:6960', res2 => {
     const thingo = JSON.parse(Buffer.concat(data).toString());
 	console.log(thingo)
 	  for (const [key1,val1] of Object.entries(thingo)) {
-	    for (item in val1) {
+	    //console.log(val1);
+	    for (let item of val1) {
                neos_possibilon[item] += 0.1
             } 
           }
