@@ -22,6 +22,7 @@ var neos_songstress = {
 }
 
 let neos_possibilon = {}
+let neos_possibilon_world_data = {}
 // DWAVE will return random lyrics from it's probability score
 // we can choose to use the random ones, or
 // take the first one along with the next 4 consequtive lines from that song
@@ -99,7 +100,7 @@ app.get('/', function (req, res) {
 
 // Hit this endpoint to get the latest value we've recorded from NEOS for POSSIBILON
  app.get('/read/neos/possibilon', function (req, res) {
-  res.send(neos_possibilon);
+  res.send(neos_possibilon_world_data);
   //res.send("HI");
 });
 
@@ -176,11 +177,11 @@ http.get('http://142.93.45.103:6960', res2 => {
                neos_possibilon[item] += 0.1
             } 
           }
-	    let response = {}
-	    response.values = neos_possibilon
-            response.timestamp = new Date();
-	    response.worlds = thingo
-            res.send(response);
+	    neos_possibilon_world_data = {}
+	    neos_possibilon_world_data.values = neos_possibilon
+            neos_possibilon_world_data.timestamp = new Date();
+	    neos_possibilon_world_data.worlds = thingo
+            res.send(neos_possibilon_world_data);
   });
 });
 
